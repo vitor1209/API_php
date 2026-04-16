@@ -1,38 +1,42 @@
 <?php
-    header("Content-type: application/json");
+header("Content-type: application/json");
 
-    $metodo = $_SERVER['REQUEST_METHOD'];
+$metodo = $_SERVER['REQUEST_METHOD'];
 
-    // echo $metodo
+$arquivo = 'usuarios.json';
 
-    switch ($metodo) {
-        case 'GET':
-            echo "Metodo GET";
-            break;
+if (!file_exists($arquivo)) {
+    file_put_contents($arquivo, json_encode([], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+}
+$usuarios = file_get_contents($arquivo);
 
-        case 'POST':
-            echo "Metodo POST"; 
-            break;
+switch ($metodo) {
+    case 'GET':
+        echo $usuarios;
+        break;
 
-        case 'PUT':
-            echo "Metodo PUT"; 
-            break;
+    case 'POST':
+        $dados = json_decode(file_get_contents('php://input'), true);
+        $novoUser = [
+            "id" => $dados['id'],
+            "nome" => $dados['nome'],
+            "emai" => $dados['emai']
+        ];
 
-        case 'DELETE':
-            echo "Metodo DELETE"; 
-            break;
-        
-        default:
-            echo "tipo um 404"; 
-            break;
-    }
+        // array_push($usuarios, $novoUser);
+        echo json_encode('Usuario inserito com sucesdso!');
+        echo json_encode($usuarios);
+        break;
 
-    // $usuarios = [
-    //     ["id" => 1,"nome" => "lopes", "emai" => "lopes@teste.com"],
-    //     ["id" => 2,"nome" => "fulano", "emai" => "fulano@teste.com"]
-    // ];
+    case 'PUT':
+        echo "Metodo PUT";
+        break;
 
-    // $json = json_encode($usuarios);
+    case 'DELETE':
+        echo "Metodo DELETE";
+        break;
 
-    // echo $json;
-?>
+    default:
+        echo "tipo um 404";
+        break;
+}
