@@ -16,27 +16,33 @@ switch ($metodo) {
         break;
 
     case 'POST':
+
         $dados = json_decode(file_get_contents('php://input'), true);
+
+        if (!isset($dados["id"]) || !isset($dados["nome"]) || !isset($dados["email"])) {
+            http_response_code(400);
+            echo json_encode(["erro" => "Dados incompletos"], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        $usuariosList = json_decode($usuarios, true);
+        
         $novoUser = [
             "id" => $dados['id'],
             "nome" => $dados['nome'],
-            "emai" => $dados['emai']
+            "email" => $dados['email']
         ];
 
-        // array_push($usuarios, $novoUser);
-        echo json_encode('Usuario inserito com sucesdso!');
-        echo json_encode($usuarios);
-        break;
+        $usuariosList[] = $novoUser;
 
-    case 'PUT':
-        echo "Metodo PUT";
-        break;
+        file_put_contents($arquivo, json_encode($usuariosList, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
-    case 'DELETE':
-        echo "Metodo DELETE";
+        echo json_encode(["mensagem" => 'Usuario inserido com sucesso', 'usuario' => $usuariosList], JSON_UNESCAPED_UNICODE);
         break;
 
     default:
-        echo "tipo um 404";
+        http_response_code(405);
+
+        echo json_encode(["erro" => "Metodo não permitido!"], JSON_UNESCAPED_UNICODE);
         break;
 }

@@ -1,12 +1,17 @@
 [
     {
-        "id": 1,
-        "nome": "lopes",
-        "emai": "lopes@teste.com"
+        "id": 3,
+        "nome": "vitinho",
+        "email": "vitinho@teste.com"
     },
     {
-        "id": 2,
-        "nome": "fulano",
-        "emai": "fulanovd@teste.com"
+        "id": 3,
+        "nome": "vitinho",
+        "email": "vitinho@teste.com"
+    },
+    {
+        "id": 3,
+        "nome": "vitinho",
+        "email": "vitinho@teste.com"
     }
 ]
